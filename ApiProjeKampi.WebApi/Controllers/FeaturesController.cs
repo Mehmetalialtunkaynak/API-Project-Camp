@@ -50,7 +50,7 @@ namespace ApiProjeKampi.WebApi.Controllers
         {
             var value = _mapper.Map<Feature>(updateFeatureDto);
             _context.Features.Update(value);
-            return Ok("Guncelleme islemi basarili");
+            return Ok("Guncelleme islemi basarili"); 
         }
 
 
