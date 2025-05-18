@@ -13,15 +13,14 @@ namespace ApiProjeKampi.WebApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ApiContext _context;
-
-        public FeaturesController(IMapper mapper)
+        public FeaturesController(IMapper mapper, ApiContext context)
         {
             _mapper = mapper;
-            _context = new ApiContext();
+            _context = context;
         }
 
         [HttpGet]
-        public IActionResult FeatureList()
+        public IActionResult FeautureList()
         {
             var values = _context.Features.ToList();
             return Ok(_mapper.Map<List<ResultFeatureDto>>(values));
@@ -32,36 +31,33 @@ namespace ApiProjeKampi.WebApi.Controllers
         {
             var value = _mapper.Map<Feature>(createFeatureDto);
             _context.Features.Add(value);
-            return Ok("Ekleme işlemi Başarılı");
+            _context.SaveChanges();
+            return Ok("Ekleme İşlemi Başarılı");
         }
-
 
         [HttpDelete]
         public IActionResult DeleteFeature(int id)
         {
             var value = _context.Features.Find(id);
             _context.Features.Remove(value);
-            return Ok("Delete task is succesfuly Completed");
+            _context.SaveChanges();
+            return Ok("Silme işlemi başarılı");
         }
 
+        [HttpGet("GetFeature")]
+        public IActionResult GetFeature(int id)
+        {
+            var value = _context.Features.Find(id);
+            return Ok(_mapper.Map<GetByIdFeatureDto>(value));
+        }
 
         [HttpPut]
         public IActionResult UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
             var value = _mapper.Map<Feature>(updateFeatureDto);
             _context.Features.Update(value);
-            return Ok("Guncelleme islemi basarili"); 
+            _context.SaveChanges();
+            return Ok("Güncelleme işlemi başarılı");
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }
